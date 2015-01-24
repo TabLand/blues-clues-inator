@@ -4,9 +4,11 @@
 
     $imgur_link = $_GET["imgur"];
 
-    $imgur_id = get_imgur_id($imgur_link);
+    $imgur_id      = get_imgur_id($imgur_link);
+    $json          = get_image_details($imgur_id);
 
-    get_image_details($imgur_id);
+    header("application/json");
+    echo $json;
 
     function get_imgur_id($link){
         $pattern  = "/https?:\/\/[www]?imgur\.com\/gallery\//";
@@ -22,12 +24,14 @@
         
         $handle = curl_init($api_url);
 
-        curl_setopt($handle, CURLOPT_HEADER, "Authorization: Client-ID " . CLIENT_ID . "\r\n");
+        $auth_header = "Authorization: Client-ID " . CLIENT_ID;
+
+        curl_setopt($handle, CURLOPT_HTTPHEADER, array( $auth_header ) );
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
 
-        $content = curl_exec($handle);
-        echo $content;
+        $json = curl_exec($handle);
 
         curl_close($handle);
+        return $json;
     }
 ?>
