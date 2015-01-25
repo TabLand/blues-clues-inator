@@ -1,7 +1,6 @@
 <?php
     include "imgur.php";
     include "imgur_lib.php";
-    error_reporting(E_ALL);
 
     $imgur_link = $_GET["imgur"];
 
