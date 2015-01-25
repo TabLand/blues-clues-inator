@@ -9,14 +9,21 @@
     $image_details = json_decode($json,true);
 
     $image_type = $image_details["data"]["type"];
-    $animated   = $image_details["data"]["animated"];
+
+    if(isset($image_details["data"]["animated"])){
+        $animated = $image_details["data"]["animated"];
+    }
+	else $animated = false;
 
     if($image_type == "image/gif" && $animated){
         $image_url = $image_details["data"]["link"];
         $animation = new Imagick($image_url);
-        echo get_delay($animation);
+        $delay = get_delay($animation);
     }
-    else echo "miss!";
+    else $delay = 0;
+
+    header("Content-type: application/json");
+    echo json_encode(array("delay" => $delay));
 
     function get_delay($animation){
         $delays = 0;
