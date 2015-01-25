@@ -1,4 +1,6 @@
 <?php
+    include "imgur.php";
+
     function get_imgur_id($link){
         $bits      = explode("/",$link);
         $imgur_id  = array_pop( $bits );
